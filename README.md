@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/lj9cm2u82kxcme58?svg=true)](https://ci.appveyor.com/project/jameshollandusa/nhibernate-blockgenerator)
+
 nhibernate.blockgenerator
 =========================
 

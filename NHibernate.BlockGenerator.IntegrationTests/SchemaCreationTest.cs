@@ -7,8 +7,8 @@ namespace NHibernate.BlockGenerator.IntegrationTests
     public class SchemaCreationTest
     {
         /// <summary>
-        /// This test creates the schema for the rest of the tests. It only needs to be run once.
-        /// You need to create the database yourself.
+        /// This test creates the schema for the rest of the tests and also exports a copy to a file.
+        /// It only needs to be run once. You need to create the database yourself.
         /// </summary>
         [RunnableInDebugOnly]
         public void RecreateDatabase()
@@ -16,7 +16,9 @@ namespace NHibernate.BlockGenerator.IntegrationTests
             var configuration = new ConfigurationFactory().CreateConfiguration();
             var schemaExport = new SchemaExport(configuration);
 
-            schemaExport.Execute(false, true, false);
+            // The current dir is the bin/Debug folder so we back out of there.
+            schemaExport.SetOutputFile(@"..\..\..\database\create_schema.sql");
+            schemaExport.Execute(true, true, false);
 
             // We expect two generator tables - the default one used by most of the model classes,
             // and the one with all params specified that uses a custom table and column.

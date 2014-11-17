@@ -8,7 +8,7 @@ namespace NHibernate.BlockGenerator.IntegrationTests
 {
     class ConfigurationFactory
     {
-        private const string ConnectionString = "Server=LOCALHOST;Database=BlockGeneratorTest;Integrated Security=true";
+        private const string ConnectionString = @"Server=LOCALHOST;Database=BlockGeneratorTest;Integrated Security=true";
 
         public Configuration CreateConfiguration()
         {
