@@ -11,3 +11,7 @@ before_build:
 before_test:
   - sqlcmd -S "(local)\SQL2008R2SP2" -U "sa" -P "Password12!" -i "database\create_database.sql"
   - sqlcmd -S "(local)\SQL2008R2SP2" -U "sa" -P "Password12!" -d "BlockGeneratorTest" -i "database\create_schema.sql"
+
+artifacts:
+  - path: NHibernate.BlockGenerator\bin\$(configuration)\NHibernate.BlockGenerator.dll
+    name: NHibernate BlockGenerator
