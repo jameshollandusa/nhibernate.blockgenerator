@@ -29,5 +29,5 @@ artifacts:
   - path: NHibernate.BlockGenerator\bin\$(configuration)\NHibernate.BlockGenerator.dll
     name: NHibernate BlockGenerator
 
-  - path: *.nupkg
+  - path: "*.nupkg"
     name: NHibernate BlockGenerator Nuget Package
