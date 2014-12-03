@@ -1,6 +1,19 @@
+environment:
+  semver: 1.0.0
+  
+version: $(semver).{build}
+
 services:
   - mssql2008r2sp2
 
+# enable patching of AssemblyInfo.* files
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "$(semver).0"
+  assembly_file_version: "{version}"
+  assembly_informational_version: "$(semver)"
+  
 configuration: Release
 
 before_build:
@@ -15,3 +28,6 @@ before_test:
 artifacts:
   - path: NHibernate.BlockGenerator\bin\$(configuration)\NHibernate.BlockGenerator.dll
     name: NHibernate BlockGenerator
+
+  - path: *.nupkg
+    name: NHibernate BlockGenerator Nuget Package
