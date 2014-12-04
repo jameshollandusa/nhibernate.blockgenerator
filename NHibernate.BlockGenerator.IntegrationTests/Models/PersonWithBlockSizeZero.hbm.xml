@@ -5,7 +5,7 @@
 
     <id name="Id">
       <column name="Id" sql-type="bigint" not-null="true"/>
-      <generator class="NHibernate.BlockGenerator.TableBlockGenerator, NHibernate.BlockGenerator">
+      <generator class="NHibernate.Id.TableBlockGenerator, NHibernate.BlockGenerator">
         <param name="block_size">0</param>
       </generator>
     </id>

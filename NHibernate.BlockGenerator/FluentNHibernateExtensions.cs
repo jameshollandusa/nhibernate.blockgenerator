@@ -1,6 +1,6 @@
-﻿using FluentNHibernate.Mapping;
+﻿using NHibernate.Id;
 
-namespace NHibernate.BlockGenerator
+namespace FluentNHibernate.Mapping
 {
     public static class FluentNHibernateExtensions
     {

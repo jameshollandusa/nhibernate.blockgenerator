@@ -1,5 +1,4 @@
 ﻿using NHibernate.Engine;
-using NHibernate.Id;
 using NHibernate.Type;
 using NHibernate.Util;
 using System;
@@ -7,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace NHibernate.BlockGenerator
+namespace NHibernate.Id
 {
 	/// <summary>
 	/// An <see cref="IIdentifierGenerator" /> that returns an <c>Int64</c>, constructed using

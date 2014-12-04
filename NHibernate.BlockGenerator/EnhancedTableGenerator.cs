@@ -1,6 +1,5 @@
 ﻿using NHibernate.AdoNet.Util;
 using NHibernate.Engine;
-using NHibernate.Id;
 using NHibernate.SqlCommand;
 using NHibernate.SqlTypes;
 using NHibernate.Type;
@@ -11,7 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Runtime.CompilerServices;
 
-namespace NHibernate.BlockGenerator
+namespace NHibernate.Id
 {
 	/// <summary>
 	/// An <see cref="IIdentifierGenerator" /> that uses a database table to store the last
