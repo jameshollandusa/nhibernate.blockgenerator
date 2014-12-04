@@ -23,6 +23,9 @@ before_build:
   # Fix the connection string in the test assembly before compilation
   - ps: (gc NHibernate.BlockGenerator.IntegrationTests\ConfigurationFactory.cs) | foreach {$_ -replace 'Server=LOCALHOST;Database=BlockGeneratorTest;Integrated Security=true', 'Server=(local)\SQL2008R2SP2;Database=BlockGeneratorTest;User ID=sa;Password=Password12!'} | sc NHibernate.BlockGenerator.IntegrationTests\ConfigurationFactory.cs
 
+build:
+  publish_nuget: true
+
 before_test:
   - sqlcmd -S "(local)\SQL2008R2SP2" -U "sa" -P "Password12!" -i "database\create_database.sql"
   - sqlcmd -S "(local)\SQL2008R2SP2" -U "sa" -P "Password12!" -d "BlockGeneratorTest" -i "database\create_schema.sql"
