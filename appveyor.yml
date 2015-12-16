@@ -1,9 +1,9 @@
-version: 1.0.0.{build}
+version: 1.0.1.{build}
 
 # Ideally we'd use this to set the version, but AV reads the version
 # before it creates the VM and sets the env vars.
 environment:
-  semver: 1.0.0
+  semver: 1.0.1
 
 services:
   - mssql2008r2sp2
