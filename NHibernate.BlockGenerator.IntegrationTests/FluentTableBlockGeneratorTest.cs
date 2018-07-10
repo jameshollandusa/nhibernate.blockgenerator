@@ -17,8 +17,7 @@ namespace NHibernate.BlockGenerator.IntegrationTests
             var mapping = configuration.GetClassMapping(typeof(PersonWithBlockSizeTwo));
             var identifierInfo = (SimpleValue) mapping.Identifier;
 
-            Assert.True(
-                identifierInfo.IdentifierGeneratorStrategy.StartsWith("NHibernate.Id.TableBlockGenerator"));
+            Assert.StartsWith("NHibernate.Id.TableBlockGenerator", identifierInfo.IdentifierGeneratorStrategy);
 
             Assert.Equal(1, identifierInfo.IdentifierGeneratorProperties.Count);
             Assert.Equal("2", identifierInfo.IdentifierGeneratorProperties["block_size"]);
@@ -34,8 +33,7 @@ namespace NHibernate.BlockGenerator.IntegrationTests
             var mapping = configuration.GetClassMapping(typeof(PersonWithBlockSizeTwo));
             var identifierInfo = (SimpleValue)mapping.Identifier;
 
-            Assert.True(
-                identifierInfo.IdentifierGeneratorStrategy.StartsWith("NHibernate.Id.TableBlockGenerator"));
+            Assert.StartsWith("NHibernate.Id.TableBlockGenerator", identifierInfo.IdentifierGeneratorStrategy);
 
             Assert.Equal(3, identifierInfo.IdentifierGeneratorProperties.Count);
             Assert.Equal("2", identifierInfo.IdentifierGeneratorProperties["block_size"]);
@@ -53,8 +51,7 @@ namespace NHibernate.BlockGenerator.IntegrationTests
             var mapping = configuration.GetClassMapping(typeof(PersonWithBlockSizeTwo));
             var identifierInfo = (SimpleValue)mapping.Identifier;
 
-            Assert.True(
-                identifierInfo.IdentifierGeneratorStrategy.StartsWith("NHibernate.Id.TableBlockGenerator"));
+            Assert.StartsWith("NHibernate.Id.TableBlockGenerator", identifierInfo.IdentifierGeneratorStrategy);
 
             Assert.Equal(4, identifierInfo.IdentifierGeneratorProperties.Count);
             Assert.Equal("2", identifierInfo.IdentifierGeneratorProperties["block_size"]);
