@@ -1,5 +1,7 @@
 version: 2.0.0.{build}
 
+image: Visual Studio 2017
+
 # Ideally we'd use this to set the version, but AV reads the version
 # before it creates the VM and sets the env vars.
 environment:
