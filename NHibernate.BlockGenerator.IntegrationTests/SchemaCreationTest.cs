@@ -1,5 +1,4 @@
-﻿using System;
-using NHibernate.Tool.hbm2ddl;
+﻿using NHibernate.Tool.hbm2ddl;
 using Xunit;
 
 namespace NHibernate.BlockGenerator.IntegrationTests
@@ -45,7 +44,7 @@ namespace NHibernate.BlockGenerator.IntegrationTests
                 Assert.Equal(1, count);
 
                 // Check the value of the column in the given table 
-                directSql = session.CreateSQLQuery(String.Format("SELECT {1} FROM {0}", tableName, columnName));
+                directSql = session.CreateSQLQuery($"SELECT {columnName} FROM {tableName}");
                 directSql.AddScalar(columnName, NHibernateUtil.Int64);
                 var value = directSql.UniqueResult<long>();
                 Assert.Equal(initialValue, value);
