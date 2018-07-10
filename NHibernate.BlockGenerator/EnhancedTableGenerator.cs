@@ -1,32 +1,32 @@
-﻿using NHibernate.AdoNet.Util;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Runtime.CompilerServices;
+using NHibernate.AdoNet.Util;
 using NHibernate.Engine;
 using NHibernate.SqlCommand;
 using NHibernate.SqlTypes;
 using NHibernate.Type;
 using NHibernate.Util;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Runtime.CompilerServices;
 
 namespace NHibernate.Id
 {
-	/// <summary>
-	/// An <see cref="IIdentifierGenerator" /> that uses a database table to store the last
-	/// generated value, but gives the option to control the generated value to derived
+    /// <summary>
+    /// An <see cref="IIdentifierGenerator" /> that uses a database table to store the last
+    /// generated value, but gives the option to control the generated value to derived
     /// classes. This is simply a clone of <see cref="TableGenerator" /> that exposes
     /// an additional extension point.
-	/// </summary>
-    public class EnhancedTableGenerator : TransactionHelper, IPersistentIdentifierGenerator, IConfigurable
+    /// </summary>
+    public partial class EnhancedTableGenerator : TransactionHelper, IPersistentIdentifierGenerator, IConfigurable
 	{
-		private static readonly IInternalLogger log = LoggerProvider.LoggerFor(typeof (TableGenerator));
+        private static readonly INHibernateLogger log = NHibernateLogger.For(typeof(EnhancedTableGenerator));
 
-		/// <summary>
-		/// An additional where clause that is added to 
-		/// the queries against the table.
-		/// </summary>
-		public const string Where = "where";
+        /// <summary>
+        /// An additional where clause that is added to 
+        /// the queries against the table.
+        /// </summary>
+        public const string Where = "where";
 
 		/// <summary>
 		/// The name of the column parameter.
@@ -194,19 +194,19 @@ namespace NHibernate.Id
 
 		#endregion
 
-		public override object DoWorkInCurrentTransaction(ISessionImplementor session, IDbConnection conn,
-														  IDbTransaction transaction)
+		public override object DoWorkInCurrentTransaction(ISessionImplementor session, DbConnection conn,
+														  DbTransaction transaction)
 		{
 			long result;
 			int rows;
 			do
 			{
 				//the loop ensure atomicitiy of the 
-				//select + uspdate even for no transaction
+				//select + update even for no transaction
 				//or read committed isolation level (needed for .net?)
 
-				IDbCommand qps = conn.CreateCommand();
-				IDataReader rs = null;
+				var qps = conn.CreateCommand();
+				DbDataReader rs = null;
 				qps.CommandText = query;
 				qps.CommandType = CommandType.Text;
 				qps.Transaction = transaction;
@@ -214,25 +214,19 @@ namespace NHibernate.Id
 				try
 				{
 					rs = qps.ExecuteReader();
-					if (!rs.Read())
-					{
-						string err;
-						if (string.IsNullOrEmpty(whereClause))
-						{
-							err = "could not read a hi value - you need to populate the table: " + tableName;
-						}
-						else
-						{
-							err = string.Format("could not read a hi value from table '{0}' using the where clause ({1})- you need to populate the table.", tableName, whereClause);
-						}
-						log.Error(err);
-						throw new IdentifierGenerationException(err);
-					}
-					result = Convert.ToInt64(columnType.Get(rs, 0));
+                    if (!rs.Read())
+                    {
+                        var errFormat = string.IsNullOrEmpty(whereClause)
+                            ? "could not read a hi value - you need to populate the table: {0}"
+                            : "could not read a hi value from table '{0}' using the where clause ({1})- you need to populate the table.";
+				        log.Error(errFormat, tableName, whereClause);
+                        throw new IdentifierGenerationException(string.Format(errFormat, tableName, whereClause));
+				    }
+				    result = Convert.ToInt64(columnType.Get(rs, 0, session));
 				}
 				catch (Exception e)
 				{
-					log.Error("could not read a hi value", e);
+					log.Error(e, "could not read a hi value");
 					throw;
 				}
 				finally
@@ -244,8 +238,7 @@ namespace NHibernate.Id
 					qps.Dispose();
 				}
 
-				IDbCommand ups = session.Factory.ConnectionProvider.Driver.GenerateCommand(CommandType.Text, updateSql,
-																						   parameterTypes);
+				var ups = session.Factory.ConnectionProvider.Driver.GenerateCommand(CommandType.Text, updateSql, parameterTypes);
 				ups.Connection = conn;
 				ups.Transaction = transaction;
 
@@ -255,8 +248,8 @@ namespace NHibernate.Id
                     // The change from the original version is the line below
                     // that makes a call to a new virtual method GetNextIdValue
                     // *** 
-                    columnType.Set(ups, GetNextIdValue(result), 0);
-					columnType.Set(ups, result, 1);
+                    columnType.Set(ups, GetNextIdValue(result), 0, session);
+					columnType.Set(ups, result, 1, session);
 
 					PersistentIdGeneratorParmsNames.SqlStatementLogger.LogCommand("Updating id value:", ups, FormatStyle.Basic);
 
@@ -264,7 +257,7 @@ namespace NHibernate.Id
 				}
 				catch (Exception e)
 				{
-					log.Error("could not update id value in: " + tableName, e);
+					log.Error(e, "could not update id value in: {0}", tableName);
 					throw;
 				}
 				finally
