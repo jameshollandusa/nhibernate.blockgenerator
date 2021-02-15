@@ -5,7 +5,7 @@
     <version>$version$</version>
     <title>NHibernate Block Generator</title>
     <authors>James Holland</authors>
-    <license type="expression">LGPL-2.1-only</licenseUrl>
+    <license type="expression">LGPL-2.1-only</license>
     <projectUrl>https://github.com/jameshollandusa/nhibernate.blockgenerator</projectUrl>
     <description>Block ID Generator for NHibernate. Allocates IDs in blocks and tracks the next available ID in the database. Allows the size of blocks to vary on each allocation.</description>
     <tags>nhibernate block generator</tags>
