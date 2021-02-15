@@ -10,8 +10,10 @@
     <description>Block ID Generator for NHibernate. Allocates IDs in blocks and tracks the next available ID in the database. Allows the size of blocks to vary on each allocation.</description>
     <tags>nhibernate block generator</tags>
     <dependencies>
-      <dependency id="NHibernate" version="5.3.5" />
-      <dependency id="FluentNHibernate" version="3.1.0" />
+      <group targetFramework="net461">
+        <dependency id="NHibernate" version="5.3.5" />
+        <dependency id="FluentNHibernate" version="3.1.0" />
+      </group>
     </dependencies>
   </metadata>
 </package>
