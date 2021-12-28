@@ -1,11 +1,11 @@
-version: 2.0.1.{build}
+version: 2.0.2.{build}
 
 image: Visual Studio 2022
 
 # Ideally we'd use this to set the version, but AV reads the version
 # before it creates the VM and sets the env vars.
 environment:
-  semver: 2.0.1
+  semver: 2.0.2
 
 services:
   - mssql2017
