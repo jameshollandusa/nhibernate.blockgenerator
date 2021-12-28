@@ -2,13 +2,13 @@ version: 2.0.2.{build}
 
 image: Visual Studio 2022
 
+init:
+  - net start MSSQL$SQL2019
+
 # Ideally we'd use this to set the version, but AV reads the version
 # before it creates the VM and sets the env vars.
 environment:
   semver: 2.0.2
-
-services:
-  - mssql2017
 
 # enable patching of AssemblyInfo.* files
 assembly_info:
@@ -23,14 +23,14 @@ configuration: Release
 before_build:
   - nuget restore
   # Fix the connection string in the test assembly before compilation
-  - ps: (gc NHibernate.BlockGenerator.IntegrationTests\ConfigurationFactory.cs) | foreach {$_ -replace 'Server=LOCALHOST;Database=BlockGeneratorTest;Integrated Security=true', 'Server=(local)\SQL2017;Database=BlockGeneratorTest;User ID=sa;Password=Password12!'} | sc NHibernate.BlockGenerator.IntegrationTests\ConfigurationFactory.cs
+  - ps: (gc NHibernate.BlockGenerator.IntegrationTests\ConfigurationFactory.cs) | foreach {$_ -replace 'Server=LOCALHOST;Database=BlockGeneratorTest;Integrated Security=true', 'Server=(local)\SQL2019;Database=BlockGeneratorTest;User ID=sa;Password=Password12!'} | sc NHibernate.BlockGenerator.IntegrationTests\ConfigurationFactory.cs
 
 build:
   publish_nuget: true
 
 before_test:
-  - sqlcmd -S "(local)\SQL2017" -U "sa" -P "Password12!" -i "database\create_database.sql"
-  - sqlcmd -S "(local)\SQL2017" -U "sa" -P "Password12!" -d "BlockGeneratorTest" -i "database\create_schema.sql"
+  - sqlcmd -S "(local)\SQL2019" -U "sa" -P "Password12!" -i "database\create_database.sql"
+  - sqlcmd -S "(local)\SQL2019" -U "sa" -P "Password12!" -d "BlockGeneratorTest" -i "database\create_schema.sql"
 
 artifacts:
   - path: NHibernate.BlockGenerator\bin\$(configuration)\NHibernate.BlockGenerator.dll
