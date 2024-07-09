@@ -11,8 +11,8 @@
     <tags>nhibernate block generator</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.6.1">
-        <dependency id="NHibernate" version="5.3.10" />
-        <dependency id="FluentNHibernate" version="3.1.0" />
+        <dependency id="NHibernate" version="5.5.2" />
+        <dependency id="FluentNHibernate" version="3.3.0" />
       </group>
     </dependencies>
   </metadata>
